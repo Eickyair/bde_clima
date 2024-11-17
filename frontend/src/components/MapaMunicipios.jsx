@@ -12,7 +12,7 @@ export const MapaMunicipios = ({ geoJsonPath }) => {
     const { fecha, idEstado, metricaTmp,setIdMunicipio } = useMapas();
     const { data: res, isLoading: isLoadingMunicipios } = useApi('estados/tmps', { fecha: fecha.toISOString(), id_estado: idEstado });
     useEffect(() => {
-        import(geoJsonPath)
+        import(/* @vite-ignore */ geoJsonPath)
             .then(module => {
                 const data = module.default;
                 setGeoData(data);

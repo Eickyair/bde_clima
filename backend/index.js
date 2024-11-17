@@ -37,7 +37,6 @@ app.get('/api/estados/tmps', async (req, res) => {
             nombre : municipio
         }
     })
-    console.log(p);
     res.json({data: p});
 });
 app.get('/api/mapas/municipios/tmp', async (req, res) => {
@@ -76,7 +75,6 @@ app.get('/api/mapas/municipios/tmp', async (req, res) => {
     });
     let p = predictions.map(prediction => {
         let municipio = nombres_municipios_map.get(prediction.id_municipio);
-        console.log(municipio);
         return {
             tmax: parseFloat(prediction.tmax),
             tmin: parseFloat(prediction.tmin),
