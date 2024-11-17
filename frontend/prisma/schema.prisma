@@ -1,20 +1,50 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model estado {
+  id_estado  Int         @id(map: "pk_estado")
+  nombre_est String      @db.VarChar(100)
+  municipio  municipio[]
+}
 
-    @@index([name])
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model municipio {
+  id_estado    Int
+  id_municipio Int
+  nombre_mun   String       @db.VarChar(150)
+  lat          Decimal      @db.Decimal(9, 6)
+  lon          Decimal      @db.Decimal(9, 6)
+  dh           Int
+  estado       estado       @relation(fields: [id_estado], references: [id_estado], onDelete: Cascade, map: "fk_municipio_estado")
+  prediccion   prediccion[]
+
+  @@id([id_estado, id_municipio], map: "pk_municipio")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model prediccion {
+  id_estado    Int
+  id_municipio Int
+  fecha        DateTime  @db.Date
+  cc           Decimal   @db.Decimal(5, 2)
+  desciel      String    @db.VarChar(255)
+  dirvienc     String    @db.VarChar(60)
+  dirvieng     Int
+  ndia         String    @db.VarChar(10)
+  prec         Decimal   @db.Decimal(6, 2)
+  probprec     Int
+  tmax         Decimal   @db.Decimal(5, 2)
+  tmin         Decimal   @db.Decimal(5, 2)
+  velvien      Decimal   @db.Decimal(5, 2)
+  municipio    municipio @relation(fields: [id_estado, id_municipio], references: [id_estado, id_municipio], onDelete: Cascade, map: "fk_prediccion_municipio")
+
+  @@id([id_estado, id_municipio, fecha], map: "pk_prediccion")
 }
