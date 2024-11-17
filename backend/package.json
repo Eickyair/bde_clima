@@ -1,0 +1,17 @@
+{
+  "name": "express-prisma-clima",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "yarn nodemon index.js"
+  },
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "5.22.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "nodemon": "^3.1.7",
+    "prisma": "^5.22.0"
+  }
+}
