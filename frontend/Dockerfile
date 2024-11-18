@@ -15,5 +15,6 @@ FROM node:18-alpine3.19
 WORKDIR /app
 
 COPY --from=build /app /app
+RUN yarn build
 
-CMD ["yarn","dev"]
+CMD ["yarn","preview"]
