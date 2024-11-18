@@ -29,7 +29,7 @@ export const MapasProvider = ({ children }) => {
         idEstado: -1,
         fecha: new Date(),
         metricaTmp: 'max',
-        id_municipio: -1
+        id_municipio: -1,
     };
 
     const [state, dispatch] = useReducer(mapasReducer, initialState);
@@ -39,7 +39,6 @@ export const MapasProvider = ({ children }) => {
     const setMetricaTmp = (metricaTmp) => dispatch({ type: SET_METRICA_TMP, payload: metricaTmp });
     const setIdMunicipio = (id_municipio) => dispatch({ type: SET_ID_MUNICIPIO, payload: id_municipio });
     const resetEstado = () => dispatch({ type: RESET_ESTADO });
-
     return (
         <MapasContext.Provider
             value={{

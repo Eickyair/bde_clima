@@ -1,4 +1,3 @@
-'use client'
 import estados from '../data/estados.json'
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import { useMapas } from '../context/Mapas';
@@ -112,8 +111,8 @@ export const MapaEstados = () => {
             >
                 <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_nolabels/{z}/{x}/{y}.png" />
                 {
-                    estados.features.map((feature, index) => {
-                        return <GeoJSON key={index} data={feature} onEachFeature={onEachFeature} style={() => style(feature.properties.id_estado)} />;
+                    estados.features.map((feature,i) => {
+                        return <GeoJSON key={i} data={feature} onEachFeature={onEachFeature} style={() => style(feature.properties.id_estado)} />;
                     })
                 }
             </MapContainer>

@@ -1,6 +1,6 @@
 import { MapaEstados } from "./MapaEstados"
 import { useMapas } from '../context/Mapas';
-import { MapaMunicipios } from './MapaMunicipios';
+import {MapaMunicipios} from './MapaMunicipios';
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { FloatLabel } from 'primereact/floatlabel';
@@ -38,7 +38,6 @@ export const Visualizacion = () => {
                     idEstado !== -1 && <div className="w-full flex flex-col">
                         <h2 className="text-center text-2xl font-normal font-roboto">Municipios</h2>
                         <MapaMunicipios
-                            geoJsonPath={`../data/municipios/${idEstado}.json`}
                         />
                         <SerieTemporalMunicipio />
                     </div>
