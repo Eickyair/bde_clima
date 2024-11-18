@@ -81,7 +81,7 @@ export const MapaMunicipios = ({ geoJsonPath }) => {
             >
                 <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_nolabels/{z}/{x}/{y}.png" />
                 {geoData && geoData.features.map((f, i) => {
-                    return <GeoJSON style={() => style(f.properties.id_municipio)} data={f} onEachFeature={(feature, layer) => {
+                    return <GeoJSON style={() => style(f.properties.id_municipio)} key={`${idEstado}_${f.properties.id_municipio}`} data={f} onEachFeature={(feature, layer) => {
                         layer.on({
                             click: () => {
                                 setIdMunicipio(feature.properties.id_municipio);
