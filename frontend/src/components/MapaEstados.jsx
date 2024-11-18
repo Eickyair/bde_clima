@@ -6,7 +6,7 @@ import { useApi } from '../hooks/useApi';
 import { Skeleton } from 'primereact/skeleton';
 
 export const MapaEstados = () => {
-    const { setIdEstado, fecha ,metricaTmp} = useMapas();
+    const { setIdEstado, fecha ,metricaTmp, setIdMunicipio } = useMapas();
     const { data: res, isLoading: isLoadingMunicipios } = useApi('mapas/estados', { fecha: fecha.toISOString() })
     const w = 600
     const h = 600
@@ -68,11 +68,15 @@ export const MapaEstados = () => {
         layer.on({
             click: () => {
                 setIdEstado(feature.properties.id_estado);
+                setIdMunicipio(-1)
             }
         });
     };
     return <div>
-        <div style={{ width: `${w}px`, height: `${h}px`, borderRadius:'10px', overflow:'hidden' }}>
+        <h1 className='font-normal text-2xl text-center font-roboto'>
+            Mapa de estados
+        </h1>
+        <div style={{ width: `${w}px`, height: `${h}px`, borderRadius:'10px', overflow:'hidden' }} className='shadow-xl'>
             <MapContainer
                 style={{
                     width: "100%",
@@ -81,6 +85,7 @@ export const MapaEstados = () => {
                     top: 0
                 }}
                 center={[19.432794095377233, -99.13145749369393]}
+                zoomControl={false}
                 zoom={5}
             >
                 <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_nolabels/{z}/{x}/{y}.png" />

@@ -14,7 +14,7 @@ const SerieTemporalMunicipio = () => {
     if (isLoadingMunicipios || !res) {
         return <Skeleton width='100%' height='100%' />
     }
-    return < Chart className='h-[200px]' type="line" data={{
+    return < Chart className='h-[200px] w-full md:w-30rem' type="line" st data={{
         labels: res.data.map(d => d.fecha),
         datasets: [
             {

@@ -17,7 +17,6 @@ export const MapaMunicipios = ({ geoJsonPath }) => {
                 const data = module.default;
                 setGeoData(data);
                 let centro = turf.centerOfMass(data);
-
                 setCenter([centro.geometry.coordinates[1], centro.geometry.coordinates[0]]);
                 const bbox = turf.bbox(data);
                 setBounds([
@@ -76,6 +75,7 @@ export const MapaMunicipios = ({ geoJsonPath }) => {
             <MapContainer
                 key={geoData ? geoData.features.length : 'loading'}
                 center={center}
+                zoomControl={false}
                 bounds={bounds}
                 style={{ height: h , width: '100%' }}
             >
