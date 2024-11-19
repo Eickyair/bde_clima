@@ -1,17 +1,17 @@
 import express from 'express';
 import cors from 'cors';
-import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
 import dotenv from 'dotenv';
+import prisma from './db.js'
+import estadosRouter from './routers/estado.js'
 dotenv.config();
-
 const HOST = process.env.HOST || 'localhost';
 const app = express();
 const port = 3000;
-const prisma = new PrismaClient();
 app.use(cors({
     origin: `*`,
 }))
+app.use('/api', estadosRouter);
 app.get('/api/estados/tmps', async (req, res) => {
     const queryParamsSchema = z.object({
         fecha: z.string(),
