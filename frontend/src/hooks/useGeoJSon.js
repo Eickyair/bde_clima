@@ -21,14 +21,14 @@ export const useGeoJSON = (idEstado) => {
                     // Calcula el centro de masa
                     const centerOfMass = turf.centerOfMass(data).geometry.coordinates;
                     const center = [centerOfMass[1], centerOfMass[0]];
-                    
+
                     // Calcula el bounding box
                     const bbox = turf.bbox(data);
                     const bounds = [
                         [bbox[1], bbox[0]],
                         [bbox[3], bbox[2]]
                     ];
-                    
+
                     // Actualiza el estado del mapa
                     setMapView({ center, bounds });
                 } catch (err) {

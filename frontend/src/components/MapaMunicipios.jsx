@@ -51,7 +51,7 @@ const style = (id_estado, maximo, minimo, metricaTmp, dataMunicipios) => {
     };
 };
 export const MapaMunicipios = () => {
-    const h = 400;
+    const h = '100%';
     const { fecha, idEstado, metricaTmp, setIdMunicipio } = useMapas();
     const [wait, setWait] = useState(true);
     const { data } = useMunicipiosEstado(fecha, idEstado);
@@ -61,41 +61,43 @@ export const MapaMunicipios = () => {
     }, [mapView]);
     useEffect(() => {
         setWait(true);
-    },[idEstado])
+    }, [idEstado])
     if (!jsonMapa || !data || updatingMapView) {
         return <Skeleton width='100%' height={h} />;
     }
 
     if (!wait && jsonMapa && mapView.bounds && mapView.center && data) {
-        return <MapContainer
-            center={mapView.center}
-            zoomControl={false}
-            key={idEstado}
-            bounds={mapView.bounds}
-            style={{ height: h, width: '100%' }}>
-            <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_nolabels/{z}/{x}/{y}.png" />
-            {jsonMapa && jsonMapa.features.map((f) => {
-                return (
-                    <GeoJSON
-                        key={`${idEstado}-${f.properties.id_municipio}`}
-                        style={() => style(f.properties.id_municipio, data.maxTmp, data.minTmp, metricaTmp, data.data)}
-                        data={f}
-                        onEachFeature={(feature, layer) => {
-                            layer.on({
-                                click: () => {
-                                    setIdMunicipio(feature.properties.id_municipio);
+        return <div className='w-full h-full'>
+            <MapContainer
+                center={mapView.center}
+                zoomControl={false}
+                key={idEstado}
+                bounds={mapView.bounds}
+                style={{ height: h, width: '100%' }}>
+                <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_nolabels/{z}/{x}/{y}.png" />
+                {jsonMapa && jsonMapa.features.map((f) => {
+                    return (
+                        <GeoJSON
+                            key={`${idEstado}-${f.properties.id_municipio}`}
+                            style={() => style(f.properties.id_municipio, data.maxTmp, data.minTmp, metricaTmp, data.data)}
+                            data={f}
+                            onEachFeature={(feature, layer) => {
+                                layer.on({
+                                    click: () => {
+                                        setIdMunicipio(feature.properties.id_municipio);
+                                    }
+                                });
+                                let municipio = obtenerMunicipio(feature.properties.id_municipio, data.data);
+                                if (!municipio) {
+                                    return;
                                 }
-                            });
-                            let municipio = obtenerMunicipio(feature.properties.id_municipio, data.data);
-                            if (!municipio) {
-                                return;
-                            }
-                            let contenido = `<h2>${municipio.nombre}</h2> <br> Máxima: ${municipio.tmax} <br> Mínima: ${municipio.tmin}`;
-                            layer.bindPopup(contenido);
-                        }}
-                    />
-                )
-            })}
-        </MapContainer>
+                                let contenido = `<h2>${municipio.nombre}</h2> <br> Máxima: ${municipio.tmax} <br> Mínima: ${municipio.tmin}`;
+                                layer.bindPopup(contenido);
+                            }}
+                        />
+                    )
+                })}
+            </MapContainer>
+        </div>
     }
 };

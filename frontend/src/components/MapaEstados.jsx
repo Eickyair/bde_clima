@@ -51,8 +51,8 @@ const style = (id_estado, maximo, minimo, metricaTmp, dataEstados) => {
 export const MapaEstados = () => {
     const { setIdEstado, fecha, metricaTmp, setIdMunicipio } = useMapas();
     const { data: metricasEstados, isLoading: isLoadingEstados, error } = useEstados(fecha)
-    const w = 600
-    const h = 600
+    const w = '100%'
+    const h = '100%'
     const onEachFeature = (feature, layer, dataEstados) => {
         if (feature.properties.id_estado) {
             const estado = obtenerEstado(feature.properties.id_estado, dataEstados)
@@ -98,59 +98,45 @@ export const MapaEstados = () => {
     const { maxTmp, minTmp } = metricasEstados
     if (metricaTmp === 'min') {
         return (
-            <div>
-                <h1 className='font-normal text-2xl text-center font-roboto'>
-                    Mapa de estados
-                </h1>
-                <div style={{ width: `${w}px`, height: `${h}px`, borderRadius: '10px', overflow: 'hidden' }} className='shadow-xl'>
-                    <MapContainer
-                        style={{
-                            width: "100%",
-                            height: "100%",
-                            zIndex: 10,
-                            top: 0
-                        }}
-                        center={[19.432794095377233, -99.13145749369393]}
-                        zoomControl={false}
-                        zoomAnimation={true}
-                        zoom={5}
-                    >
-                        <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_nolabels/{z}/{x}/{y}.png" />
-                        {
-                            estados.features.map((feature, i) => {
-                                return <GeoJSON key={i} data={feature} onEachFeature={(f, l) => onEachFeature(f, l, metricasEstados.data)} style={() => style(feature.properties.id_estado, maxTmp, minTmp, metricaTmp, metricasEstados.data)} />;
-                            })
-                        }
-                    </MapContainer>
-                </div>
+            <div className='w-full h-full'>
+                <MapContainer
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                    }}
+                    center={[19.432794095377233, -99.13145749369393]}
+                    zoomControl={false}
+                    zoomAnimation={true}
+                    zoom={5}
+                >
+                    <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_nolabels/{z}/{x}/{y}.png" />
+                    {
+                        estados.features.map((feature, i) => {
+                            return <GeoJSON key={i} data={feature} onEachFeature={(f, l) => onEachFeature(f, l, metricasEstados.data)} style={() => style(feature.properties.id_estado, maxTmp, minTmp, metricaTmp, metricasEstados.data)} />;
+                        })
+                    }
+                </MapContainer>
             </div>)
     } else if (metricaTmp === 'max') {
         return (
-            <div>
-                <h1 className='font-normal text-2xl text-center font-roboto'>
-                    Mapa de estados
-                </h1>
-                <div style={{ width: `${w}px`, height: `${h}px`, borderRadius: '10px', overflow: 'hidden' }} className='shadow-xl'>
-                    <MapContainer
-                        style={{
-                            width: "100%",
-                            height: "100%",
-                            zIndex: 10,
-                            top: 0
-                        }}
-                        center={[19.432794095377233, -99.13145749369393]}
-                        zoomControl={false}
-                        zoomAnimation={true}
-                        zoom={5}
-                    >
-                        <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_nolabels/{z}/{x}/{y}.png" />
-                        {
-                            estados.features.map((feature, i) => {
-                                return <GeoJSON key={i} data={feature} onEachFeature={(f, l) => onEachFeature(f, l, metricasEstados.data)} style={() => style(feature.properties.id_estado, maxTmp, minTmp, metricaTmp, metricasEstados.data)} />;
-                            })
-                        }
-                    </MapContainer>
-                </div>
+            <div className='w-full h-full'>
+                <MapContainer
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                    }}
+                    center={[19.432794095377233, -99.13145749369393]}
+                    zoomControl={false}
+                    zoomAnimation={true}
+                    zoom={5}
+                >
+                    <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_nolabels/{z}/{x}/{y}.png" />
+                    {
+                        estados.features.map((feature, i) => {
+                            return <GeoJSON key={i} data={feature} onEachFeature={(f, l) => onEachFeature(f, l, metricasEstados.data)} style={() => style(feature.properties.id_estado, maxTmp, minTmp, metricaTmp, metricasEstados.data)} />;
+                        })
+                    }
+                </MapContainer>
             </div>)
     }
 }

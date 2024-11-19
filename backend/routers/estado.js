@@ -47,6 +47,6 @@ const getEstados = async (req, res) => {
         res.status(500).json({ error: 'Error al obtener los estados' });
     }
 }
-router.get('/estados', getEstados);
+router.get('/', getEstados);
 
 export default router;
