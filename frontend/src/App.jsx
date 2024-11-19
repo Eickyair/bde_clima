@@ -8,9 +8,7 @@ const App = () => {
   return (
     <>
       <PrimeReactProvider><MapasProvider>
-        <GeoJSONProvider>
         <Visualizacion />
-        </GeoJSONProvider>
       </MapasProvider></PrimeReactProvider>
     </>
   );

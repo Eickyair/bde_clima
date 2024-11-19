@@ -4,6 +4,7 @@ import { z } from 'zod';
 import dotenv from 'dotenv';
 import prisma from './db.js'
 import estadosRouter from './routers/estado.js'
+import municipiosRouter from './routers/municipios.js'
 dotenv.config();
 const HOST = process.env.HOST || 'localhost';
 const app = express();
@@ -12,6 +13,7 @@ app.use(cors({
     origin: `*`,
 }))
 app.use('/api', estadosRouter);
+app.use('/api/v1/municipios', municipiosRouter);
 app.get('/api/estados/tmps', async (req, res) => {
     const queryParamsSchema = z.object({
         fecha: z.string(),

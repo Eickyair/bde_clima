@@ -20,18 +20,24 @@ const obtenerEstado = (id_estado, dataEstados) => {
     return dataEstados.find(estado => estado.id_estado === id_estado)
 }
 const calcularColorCoolWarm = (id_estado, maximo, minimo, metricaTmp, dataEstados) => {
-    const estado = obtenerEstado(id_estado, dataEstados)
+    const estado = obtenerEstado(id_estado, dataEstados);
     if (!estado) {
-        return '#fff'
+        return '#FFFFFF'; // Blanco si no se encuentra el estado
     }
-    let tmp = obtenerValor(estado, metricaTmp)
 
-    let tmp_estandar = (tmp - minimo) / (maximo - minimo)
-    if (metricaTmp === 'min') {
-        return `rgb(0,0,${255 * tmp_estandar})`
-    }
-    return `rgb(${255 * tmp_estandar},0,0)`
-}
+    // Obtener el valor de la métrica (tmax o tmin)
+    let tmp = obtenerValor(estado, metricaTmp);
+
+    // Normalizar el valor de temperatura entre 0 y 1
+    let tmp_estandar = (tmp - minimo) / (maximo - minimo);
+    tmp_estandar = Math.min(Math.max(tmp_estandar, 0), 1); // Clamp entre 0 y 1
+
+    // Calcular el matiz (Hue) de 240 (azul) a 0 (rojo)
+    let hue = 240 - (240 * tmp_estandar);
+
+    // Retornar el color en formato HSL
+    return `hsl(${hue}, 100%, 50%)`;
+};
 const style = (id_estado, maximo, minimo, metricaTmp, dataEstados) => {
     return {
         fillColor: calcularColorCoolWarm(id_estado, maximo, minimo, metricaTmp, dataEstados),
@@ -51,7 +57,7 @@ export const MapaEstados = () => {
         if (feature.properties.id_estado) {
             const estado = obtenerEstado(feature.properties.id_estado, dataEstados)
             const { tmax, tmin } = obtenerMetricas(estado)
-            let contenido = `<h2>${estado.nombre_est}</h2> <br> Máxima: ${tmax} <br> Mínima: ${tmin}`
+            let contenido = `<h2>${estado.nombre}</h2> <br> Máxima: ${tmax} <br> Mínima: ${tmin}`
             layer.bindPopup(contenido);
         }
         layer.on({

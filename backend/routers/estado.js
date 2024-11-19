@@ -44,7 +44,6 @@ const getEstados = async (req, res) => {
         }, Infinity);
         res.json({ data: infoMap, maxTmp, minTmp });
     } catch (error) {
-        console.log(error)
         res.status(500).json({ error: 'Error al obtener los estados' });
     }
 }
