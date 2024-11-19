@@ -18,7 +18,6 @@ export const MapaMunicipios = () => {
     const { addGeoJSON, getGeoJSON } = useGeoJSON();
     const { fecha, idEstado, metricaTmp, setIdMunicipio } = useMapas();
     const { data: res, isLoading: isLoadingMunicipios } = useApi('estados/tmps', { fecha: fecha.toISOString(), id_estado: idEstado });
-
     useEffect(() => {
         const fetchData = async () => {
             setGeoData(null);
@@ -30,35 +29,28 @@ export const MapaMunicipios = () => {
             const cache = getGeoJSON(idEstado);
             if (cache) {
                 setGeoData(cache);
-                const centro = turf.centerOfMass(cache);
-                const center = [centro.geometry.coordinates[1], centro.geometry.coordinates[0]];
-                const bbox = turf.bbox(cache);
-                const bounds = [
-                    [bbox[1], bbox[0]],
-                    [bbox[3], bbox[2]]
-                ];
-                setMapView({ center, bounds });
-                return;
             }
-
             const response = await fetch(`${VITE_HOST}/municipios/${idEstado}.json`);
             const data = await response.json();
             setGeoData(data);
             addGeoJSON(idEstado, data);
-
-            const centro = turf.centerOfMass(data);
-            const center = [centro.geometry.coordinates[1], centro.geometry.coordinates[0]];
-            const bbox = turf.bbox(data);
-            const bounds = [
-                [bbox[1], bbox[0]],
-                [bbox[3], bbox[2]]
-            ];
-            setMapView({ center, bounds });
         };
 
         fetchData();
     }, [idEstado]);
-
+    useEffect(() => {
+        if (!geoData) {
+            return;
+        }
+        const centro = turf.centerOfMass(geoData);
+        const center = [centro.geometry.coordinates[1], centro.geometry.coordinates[0]];
+        const bbox = turf.bbox(geoData);
+        const bounds = [
+            [bbox[1], bbox[0]],
+            [bbox[3], bbox[2]]
+        ];
+        setMapView({ center, bounds });
+    }, [geoData])
     const buscarMunicipio = (id_municipio) => {
         const municipio = res.data.find(m => m.id_municipio === id_municipio);
         return municipio;
@@ -109,14 +101,13 @@ export const MapaMunicipios = () => {
             fillOpacity: 0.6
         };
     };
-
-    return (
-        <MapContainer
+    if (mapView.bounds && mapView.center && geoData) {
+        return <MapContainer
             center={mapView.center}
             zoomControl={false}
             bounds={mapView.bounds}
-            style={{ height: h, width: '100%' }}
-        >
+            key={idEstado}
+            style={{ height: h, width: '100%' }}>
             <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_nolabels/{z}/{x}/{y}.png" />
             {geoData && geoData.features.map((f) => {
                 return (
@@ -141,5 +132,7 @@ export const MapaMunicipios = () => {
                 );
             })}
         </MapContainer>
-    );
+    }else{
+        return <Skeleton width='100%' height={h} />;
+    }
 };
