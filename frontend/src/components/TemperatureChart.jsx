@@ -17,9 +17,7 @@ const TemperatureChart = ({ h, w }) => {
 
     const chartLabels = data.data.map(item => {
         const date = new Date(item.fecha);
-        const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1)
-            .toString()
-            .padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}`;
+        const formattedDate = date.toISOString().split('T')[0].replace(/-/g, '/');
         return formattedDate;
     });
 

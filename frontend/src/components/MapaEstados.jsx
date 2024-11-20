@@ -95,6 +95,10 @@ export const MapaEstados = () => {
     if (metricasEstados.data.length === 0) {
         return <div>No hay datos</div>
     }
+    const indiceMapas = new Map()
+    metricasEstados.data.forEach((estado) => {
+        indiceMapas.set(estado.id_estado, estado)
+    })
     const { maxTmp, minTmp } = metricasEstados
     if (metricaTmp === 'min') {
         return (
@@ -112,6 +116,7 @@ export const MapaEstados = () => {
                     <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_nolabels/{z}/{x}/{y}.png" />
                     {
                         estados.features.map((feature, i) => {
+                            if (!indiceMapas.has(feature.properties.id_estado)) return <></>
                             return <GeoJSON key={i} data={feature} onEachFeature={(f, l) => onEachFeature(f, l, metricasEstados.data)} style={() => style(feature.properties.id_estado, maxTmp, minTmp, metricaTmp, metricasEstados.data)} />;
                         })
                     }
@@ -133,6 +138,7 @@ export const MapaEstados = () => {
                     <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_nolabels/{z}/{x}/{y}.png" />
                     {
                         estados.features.map((feature, i) => {
+                            if (!indiceMapas.has(feature.properties.id_estado)) return <></>
                             return <GeoJSON key={i} data={feature} onEachFeature={(f, l) => onEachFeature(f, l, metricasEstados.data)} style={() => style(feature.properties.id_estado, maxTmp, minTmp, metricaTmp, metricasEstados.data)} />;
                         })
                     }

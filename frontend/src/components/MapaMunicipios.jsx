@@ -67,6 +67,12 @@ export const MapaMunicipios = () => {
     }
 
     if (!wait && jsonMapa && mapView.bounds && mapView.center && data) {
+        console.log("🚀 ~ MapaMunicipios ~ data:", data)
+        const mapaMunicipios = new Map()
+        data.data.forEach(municipio => {
+            mapaMunicipios.set(municipio.id_municipio, municipio)
+        })
+        
         return <div className='w-full h-full'>
             <MapContainer
                 center={mapView.center}
@@ -76,6 +82,9 @@ export const MapaMunicipios = () => {
                 style={{ height: h, width: '100%' }}>
                 <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_nolabels/{z}/{x}/{y}.png" />
                 {jsonMapa && jsonMapa.features.map((f) => {
+                    if(!mapaMunicipios.has(f.properties.id_municipio)){
+                        return <></>;
+                    }
                     return (
                         <GeoJSON
                             key={`${idEstado}-${f.properties.id_municipio}`}
