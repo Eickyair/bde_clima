@@ -1,11 +1,10 @@
 import useSWR from "swr";
 import { getEndpoint } from "../utils/getEndpoint";
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
-export const useMunicipiosEstado = (fecha, idEstado) => {
+export const useGetMunicipios = (idEstado) => {
   const endpoint = getEndpoint();
-  const fecha_yyyymmdd = fecha.toISOString().slice(0, 10);
   const { data, error, isLoading, isValidating, mutate } = useSWR(
-    `${endpoint}/municipios/${idEstado}?fecha=${fecha_yyyymmdd}`,
+    idEstado !== -1 ? `${endpoint}/estados/${idEstado}` : null,
     fetcher
   );
   return {
