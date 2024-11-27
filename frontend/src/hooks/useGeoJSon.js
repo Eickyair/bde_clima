@@ -12,12 +12,7 @@ export const useGeoJSON = (idEstado) => {
   const [updatingMapView, setUpdatingMapView] = useState(false);
   const { data, error, isLoading, isValidating, mutate } = useSWRImmutable(
     `/municipios/${idEstado}.json`,
-    fetcher,
-    {
-      revalidateIfStale: false,
-      revalidateOnMount: false,
-      revalidateOnFocus: false,
-    }
+    fetcher
   );
 
   useEffect(() => {
